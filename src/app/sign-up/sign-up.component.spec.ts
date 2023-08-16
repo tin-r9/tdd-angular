@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { SignUpComponent } from './sign-up.component';
 
 describe('SignUpComponent', () => {
@@ -16,7 +15,7 @@ describe('SignUpComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
-describe('Layout', () => {
+  describe('Layout', () => {
   it('has Sign Up header', () => {
     const signUp = fixture.nativeElement as HTMLElement;
     const h1 = signUp.querySelector('h1');
@@ -79,4 +78,19 @@ describe('Layout', () => {
     expect(button?.disabled).toBeTruthy();
     })
   })
+
+  describe('Interaction', () => {
+    it('enables the button when password and password repeat match', () => {
+      const signUp = fixture.nativeElement as HTMLElement;
+      const password = signUp.querySelector('input[id="password"]') as HTMLInputElement;
+      const passwordRepeat = signUp.querySelector('input[id="passwordRepeat"]') as HTMLInputElement;
+      password.value = 'P4ssword';
+      password.dispatchEvent(new Event('input'));
+      passwordRepeat.value = 'P4ssword';
+      passwordRepeat.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      const button = signUp.querySelector('button');
+      expect(button?.disabled).toBeFalsy();
+    })
+  });
 });

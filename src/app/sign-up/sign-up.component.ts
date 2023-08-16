@@ -7,4 +7,19 @@ import { Component } from '@angular/core';
 })
 export class SignUpComponent {
 
+
+  password = '';
+  passwordRepeat = '';
+
+  onChangePassword(event:Event): void {
+    this.password = (event.target as HTMLInputElement).value;
+  }
+
+  onChangePasswordRepeat(event:Event): void {
+    this.passwordRepeat = (event.target as HTMLInputElement).value;
+  }
+
+  isDisabled(): boolean {
+    return this.password ? (this.password !== this.passwordRepeat) : true;
+  }
 }

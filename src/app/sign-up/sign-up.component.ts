@@ -7,7 +7,8 @@ import { Component } from '@angular/core';
 })
 export class SignUpComponent {
 
-
+  username = '';
+  email = '';
   password = '';
   passwordRepeat = '';
 
@@ -15,8 +16,26 @@ export class SignUpComponent {
     this.password = (event.target as HTMLInputElement).value;
   }
 
+  onChangeUsername(event:Event): void {
+    this.username = (event.target as HTMLInputElement).value;
+  }
+
+  onChangeEmail(event:Event): void {
+    this.email = (event.target as HTMLInputElement).value;
+  }
+
   onChangePasswordRepeat(event:Event): void {
     this.passwordRepeat = (event.target as HTMLInputElement).value;
+  }
+  onClickSingUp(){
+    fetch('http://localhost:3000/users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({username: this.username, email: this.email, password: this.password}),
+    })
+    .then((response) => response.json())
   }
 
   isDisabled(): boolean {

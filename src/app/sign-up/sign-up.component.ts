@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 
 @Component({
@@ -7,6 +8,7 @@ import { Component } from '@angular/core';
 })
 export class SignUpComponent {
 
+  constructor(private _httpClient : HttpClient ) { }
   username = '';
   email = '';
   password = '';
@@ -28,14 +30,22 @@ export class SignUpComponent {
     this.passwordRepeat = (event.target as HTMLInputElement).value;
   }
   onClickSingUp(){
-    fetch('http://localhost:3000/users', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({username: this.username, email: this.email, password: this.password}),
-    })
-    .then((response) => response.json())
+    // fetch('http://localhost:3000/users', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({username: this.username, email: this.email, password: this.password}),
+    // })
+    // .then((response) => response.json())
+
+    this._httpClient
+    .post('api/users', {
+      username: this.username,
+       email: this.email,
+        password: this.password
+      }).subscribe(() => {
+      });
   }
 
   isDisabled(): boolean {

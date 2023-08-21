@@ -30,15 +30,6 @@ export class SignUpComponent {
     this.passwordRepeat = (event.target as HTMLInputElement).value;
   }
   onClickSingUp(){
-    // fetch('http://localhost:3000/users', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({username: this.username, email: this.email, password: this.password}),
-    // })
-    // .then((response) => response.json())
-
     this._httpClient
     .post('api/users', {
       username: this.username,

@@ -1,48 +1,55 @@
 import { render, screen} from "@testing-library/angular"
 import { SignUpComponent } from "./sign-up.component"
 import  userEvent  from "@testing-library/user-event"
-import "whatwg-fetch";
+import 'whatwg-fetch';
+import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
+import { TestBed } from "@angular/core/testing";
 
+const setUp = async () => {
+   await render(SignUpComponent, {
+        imports: [HttpClientTestingModule],
+    });    
+}
 describe('SignUpComponent', () => {
     describe('Layout', () => {
         it('has sing up header', async () => {
-            await render(SignUpComponent);
+            await setUp();
             const header = screen.getByRole('heading', {name: 'Sign Up'});
             expect(header).toBeInTheDocument();
         });
 
         it('has username input', async () => {
-            await render(SignUpComponent);
+            await setUp();
             const input = screen.getByLabelText('Username');
             expect(input).toBeInTheDocument();
         });
 
         it('has email input', async () => {
-            await render(SignUpComponent);
+            await setUp();
             const input = screen.getByLabelText('Email');
             expect(input).toBeInTheDocument();
         });
 
         it('has password input', async () => {
-            await render(SignUpComponent);
+            await setUp();
             const input = screen.getByLabelText('Password');
             expect(input).toBeInTheDocument();
         });
 
         it('has password type for password input', async () => {
-            await render(SignUpComponent);
+            await setUp();
             const input = screen.getByLabelText('Password');
             expect(input).toHaveAttribute('type','password');
         });
         
         it('has password type for password repeat input', async () => {
-            await render(SignUpComponent);
+            await setUp();
             const input = screen.getByLabelText('Password Repeat');
             expect(input).toHaveAttribute('type','password');
         });
 
         it('has Sign Up button', async () => {
-            await render(SignUpComponent);
+            await setUp();
             const button = screen.getByRole('button', {name: 'Sign Up'});
             expect(button).toBeDisabled();
         });
@@ -51,7 +58,7 @@ describe('SignUpComponent', () => {
 
     describe('Interactions', () => {
         it('enables sign up button when password and password repeat have same value', async () => {
-            await render(SignUpComponent);
+            await setUp();
             const passwordInput = screen.getByLabelText('Password');
             const passwordRepeatInput = screen.getByLabelText('Password Repeat');
             await userEvent.type(passwordInput, 'P4ssword');
@@ -61,8 +68,8 @@ describe('SignUpComponent', () => {
         });
 
         it('sends username, email and password to backend after clicking the button', async () => {
-            const spy = jest.spyOn(window, 'fetch') ;
-            await render(SignUpComponent);
+            await setUp();
+            let httpTestingController = TestBed.inject(HttpTestingController);
             const passwordInput = screen.getByLabelText('Password');
             const passwordRepeatInput = screen.getByLabelText('Password Repeat');
             const usernameInput = screen.getByLabelText('Username');
@@ -73,15 +80,15 @@ describe('SignUpComponent', () => {
             await userEvent.type(emailInput, 'user1@mail.com');
             const button = screen.getByRole('button', {name: 'Sign Up'});
             await userEvent.click(button);
-            const args = spy.mock.calls[0];
-            const secondArgument = args[1] as RequestInit;
-            expect(secondArgument.body)
+            const req = httpTestingController.expectOne('api/users');
+            const requestBody = req.request.body;
+            expect(requestBody)
             .toEqual(
-                JSON.stringify({
+                {
                 username: 'user1',
                 email: 'user1@mail.com',
                 password: 'P4ssword',
-                })
+                }
             )
         })
     }) 

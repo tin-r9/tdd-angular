@@ -1,16 +1,33 @@
 <h1>Sign Up</h1>
-<form (submit)="onClickSingUp(); $event.preventDefault()">
-    <label for="username">Username</label>
-    <input id="username" (input)="onChangeUsername($event)"/>
-
-    <label for="email">Email</label>
-    <input id="email" (input)="onChangeEmail($event)"/>
-
-    <label for="password">Password</label>
-    <input id="password" type="password" (input)="onChangePassword($event)" />
-
-    <label for="passwordRepeat">Password Repeat</label>
-    <input id="passwordRepeat" type="password" (input)="onChangePasswordRepeat($event)" />
-
-    <button [disabled]="isDisabled()" >Sign Up</button>
+<form class="example-form">
+    <mat-form-field class="example-full-width">
+        <label for="username">Username</label>
+        <input id="username" matInput [formControl]="username" [errorStateMatcher]="matcher"/>
+        <mat-error *ngIf="username.hasError('required')">
+            Username is required
+        </mat-error>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+        <label for="email">Email</label>
+        <input id="email" type="email" matInput [formControl]="email" [errorStateMatcher]="matcher"
+        placeholder="Ex. pat@example.com"/>
+        <mat-error *ngIf="email.hasError('required')">
+            Email is required
+        </mat-error>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+        <label for="password">Password</label>
+        <input id="password" type="password" matInput [formControl]="password" [errorStateMatcher]="matcher">
+        <mat-error *ngIf="password.hasError('required')">
+            Password is required
+        </mat-error>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+        <label for="passwordRepeat">Password Repeat</label>
+        <input id="passwordRepeat" type="password" matInput [formControl]="passwordRepeat" [errorStateMatcher]="matcher">
+        <mat-error *ngIf="passwordRepeat.hasError('required')">
+            Password Repeat is required
+        </mat-error>
+    </mat-form-field>
+    <button mat-button onclick="onClickSingUp()">Sign Up</button>
 </form>
